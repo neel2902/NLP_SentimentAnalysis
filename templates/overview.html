@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarcasm Detector</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="/overview">Overview</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+
+    <div class="main w-75 mx-auto mt-5">
+        <div class="my-5">
+            <h2>A sarcasm detector for news headlines using basic NLP(Natural Language Processing)</h2>
+        </div>
+        <div class="mx-auto my-3 text-center">
+            <figure>
+                <img src="static/img/mf.png" height="300" width="300">   
+                <figcaption>Fig. Most common words in sarcastic headlines</figcaption>
+            </figure>
+        </div>
+        <section>
+            <h4>The goal</h4>
+            <p>
+                The goal is simple. To analyse different news headlines and predict the probability of it being sarcastic. But sarcasm is notoriously hard to detect, owing to the need of the underlying context, intonation or facial expression. Sarcasm detection using NLP is a very niche field, a specific case of sentiment analysis.
+
+                I found <a href="https://towardsdatascience.com/sarcasm-detection-with-nlp-cbff1723f69a">this</a> post to be particularly enlightening, and it greatly piqued my interest in this domain.
+                The project is essentially supposed to be a binary classification problem, simply output whether sarcastic or not, but the decision boundary isn't really well defined. So I left it as a regression problem which outputs the probabilities of the sentence being sarcastic.
+            </p>
+        </section>
+
+        <section class="mt-4">
+            <h4>Tools and libraries used</h4>
+            <ul>
+                <li>Tensorflow and Keras</li>
+                <li>NLTK</li>
+                <li>Matplotlib</li>
+                <li>Numpy</li>
+                <li>Pandas</li>
+                <li>WordCloud(for generating the word cloud above)</li>
+            </ul>
+        </section>
+
+        <section class="mt-4 mb-5">
+            <h4>Cleaning the dataset</h4>
+            <p>
+                The dataset used in this project was taken from <a href="https://www.kaggle.com/rmisra/news-headlines-dataset-for-sarcasm-detection">here</a>. Each record has three fields, <i>is_sarcastic</i>, <i>headline</i>, and <i>article_link</i>. There are 26709 records. The <i>is_sarcastic</i> field would be our label (y value), and the headlines, later, in its numerical form, would be our input (X).
+
+                Our training dataset will contain 20000 samples, roughly 76% of the dataset. The data will be split into training and testing sets later on, after preprocessing is completed. Preprocessing is required because neural networks can't understand text, so we need to convert the headlines into numerical inputs first.
+            </p>
+            <p>
+                The general preprocessing steps can include
+                <ul>
+                    <li>Discarding non alphabetical words</li>
+                    <li><a href="https://www.datacamp.com/community/tutorials/stemming-lemmatization-python">Stemming, Lemmatization</a></li>
+                    <li><a href="https://towardsdatascience.com/tokenization-for-natural-language-processing-a179a891bad4">Tokenization</a></li>
+                    <li>Padding or truncating the tokenized strings to a fixed length</li>
+                </ul>
+                
+                The tokenizer is fitted on the training set of 20000 sentences, and the headlines are converted to numerical sequences and padded to maintain equal dimensions.
+
+                All in all, after these steps, the sentence:
+                <p class="bg-light p-2 w-50 mx-auto">
+                    <i>former versace store clerk sues over secret 'black code' for minority shoppers</i>
+                </p>
+                may look like this:
+                <p class="bg-light p-2 w-50 mx-auto">
+                    [ 328,    1,  799, 3405, 2404,   47,  389, 2214,    1,    6, 2614,
+                    8863,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                    0]
+                </p>
+
+
+            </p>
+        </section>
+
+
+
+    </div>
+    
+</body>
+</html>

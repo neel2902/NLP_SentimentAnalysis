@@ -8,8 +8,8 @@
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<body class="d-flex flex-column min-vh-100 bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,12 +22,18 @@
               <li class="nav-item">
                 <a class="nav-link active" href="/overview">Overview</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" target="_blank" href="https://colab.research.google.com/drive/1c7Wyt0lmhe-v5SHeNIcez9w5lapUr8Ze?usp=sharing">Colab notebook</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" target="_blank" href="https://github.com/neel2902/NLP_SentimentAnalysis">Github repository</a>
+              </li>
             </ul>
           </div>
         </div>
     </nav>
 
-    <div class="main w-75 mx-auto mt-5">
+    <div class="main w-50 mx-auto mt-5 my-5">
         <div class="my-5">
             <h2>A sarcasm detector for news headlines using basic NLP(Natural Language Processing)</h2>
         </div>
@@ -42,7 +48,8 @@
             <p>
                 The goal is simple. To analyse different news headlines and predict the probability of it being sarcastic. But sarcasm is notoriously hard to detect, owing to the need of the underlying context, intonation or facial expression. Sarcasm detection using NLP is a very niche field, a specific case of sentiment analysis.
 
-                I found <a href="https://towardsdatascience.com/sarcasm-detection-with-nlp-cbff1723f69a">this</a> post to be particularly enlightening, and it greatly piqued my interest in this domain.
+                I found <a href="https://towardsdatascience.com/sarcasm-detection-with-nlp-cbff1723f69a">this</a> post to be particularly enlightening, and it greatly piqued my interest in this domain. I will be linking whatever I found useful during the implementation of this mini project.
+
                 The project is essentially supposed to be a binary classification problem, simply output whether sarcastic or not, but the decision boundary isn't really well defined. So I left it as a regression problem which outputs the probabilities of the sentence being sarcastic.
             </p>
         </section>
@@ -59,7 +66,7 @@
             </ul>
         </section>
 
-        <section class="mt-4 mb-5">
+        <section class="mt-4">
             <h4>Cleaning the dataset</h4>
             <p>
                 The dataset used in this project was taken from <a href="https://www.kaggle.com/rmisra/news-headlines-dataset-for-sarcasm-detection">here</a>. Each record has three fields, <i>is_sarcastic</i>, <i>headline</i>, and <i>article_link</i>. There are 26709 records. The <i>is_sarcastic</i> field would be our label (y value), and the headlines, later, in its numerical form, would be our input (X).
@@ -74,34 +81,108 @@
                     <li><a href="https://towardsdatascience.com/tokenization-for-natural-language-processing-a179a891bad4">Tokenization</a></li>
                     <li>Padding or truncating the tokenized strings to a fixed length</li>
                 </ul>
-                
-                The tokenizer is fitted on the training set of 20000 sentences, and the headlines are converted to numerical sequences and padded to maintain equal dimensions.
+            </p>    
+            <p>The tokenizer is fitted on the training set of 20000 sentences, and the headlines are converted to numerical sequences and padded to maintain equal dimensions.
 
-                All in all, after these steps, the sentence:
-                <p class="bg-light p-2 w-50 mx-auto">
-                    <i>former versace store clerk sues over secret 'black code' for minority shoppers</i>
-                </p>
-                may look like this:
-                <p class="bg-light p-2 w-50 mx-auto">
-                    [ 328,    1,  799, 3405, 2404,   47,  389, 2214,    1,    6, 2614,
-                    8863,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-                    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-                    0]
-                </p>
+            All in all, after these steps, the sentence:</p>
+            <p class="bg-light p-2 w-50 mx-auto">
+                <i>former versace store clerk sues over secret 'black code' for minority shoppers</i>
+            </p>
+            may look like this:
+            <p class="bg-light p-2 w-50 mx-auto">
+                [ 328,    1,  799, 3405, 2404,   47,  389, 2214,    1,    6, 2614,
+                8863,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+                0]
+            </p>
+        </section>
+        <section>
+            <h4>Building the model</h4>
+            <p>Now that we have our input data in a numerical format, we proceed to build our neural network model.
+                The model has the following structure:
+                <img src="static/img/model.png" alt="Model Architecture" height="300" class="rounded mx-auto d-block">
+            </p>
+            <p class="mt-3">
+<pre>Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 100, 16)           160000    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 16)                0         
+_________________________________________________________________
+dense (Dense)                (None, 24)                408       
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 25        
+=================================================================
+Total params: 160,433
+Trainable params: 160,433
+Non-trainable params: 0
+________________________________________________________________</pre>
+            </p>
+
+            <p>
+                Some more useful links:
+                <ul>
+                    <li>
+                        Embedding, Word2Vec, GloVe word vectors
+                        <ul>
+                            <li><a href="https://youtube.com/playlist?list=PLhWB2ZsrULv-wEM8JDKA1zk8_2Lc88I-s">Andrew NG youtube playlist</a></li>
+                            <li><a href="https://towardsdatascience.com/neural-network-embeddings-explained-4d028e6f0526">An article by Will Koerhsen</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        Pooling layers
+                        <ul>
+                            <li><a href="https://www.youtube.com/watch?v=8oOgPUO-TBY&t=13s">Pooling (Andrew NG)</a></li>
+                            <li><a href="https://machinelearningmastery.com/pooling-layers-for-convolutional-neural-networks/">Blog</a></li>
+                        </ul>
+                    </li>
+                </ul> 
+
+            </p>
 
 
+        </section>
+
+        <section class="mt-4">
+            <h4>Compiling and fitting the model</h4>
+            <p>
+                The model is compiled with binary cross entropy(read more <a href="https://towardsdatascience.com/understanding-binary-cross-entropy-log-loss-a-visual-explanation-a3ac6025181a">here</a>) and Adam as the optimizer.
+                More about optimizers in <a href="https://ruder.io/optimizing-gradient-descent/index.html#adam">this</a> incredibly useful article. The model is trained for 30 epochs. The accuracy on the training set is around 99% and 81% on the test set. However, the loss on the test set increases with the number of epochs, indicating that the model is overfitting.
+            </p>
+            <p class="d-flex">
+                <img src="static/img/accuracy.png" alt="Accuracy plot" class="rounded">
+                <img src="static/img/loss.png" alt="Loss plot" class="rounded">
+            </p>
+
+            <p>
+                And that's it. Obviously the model has a lot of room for improvement (training on more data, using an LSTM layer, changing the number of nodes in the dense layers... etc), but it will make do for now.
             </p>
         </section>
 
 
-
+        <section class="mt-4">
+            <h4>Getting it to the web</h4>
+            <p>
+                Once the model is fitted, it is saved in an <strong><i>.h5</i></strong> format.
+                The tokenizer should also be saved as it was fitted on our headlines. I saved the tokenizer as a <strong><i>.pickle</i></strong> file. All of the code can be found in the colab notebook.
+            </p>
+            <p>
+                I used flask for this web app. Other libraries such as pickle, tensorflow, numpy etc are required for preprocessing the data coming from the client and to compute the results using our saved model and the tokenizer. I had used miniconda to install these packages, hence the requirements.txt file may contain unused packages that may have come from the conda environment.
+            </p>
+        </section>
     </div>
+
+    <footer class="footer mt-auto py-3 bg-dark">
+        <div class="container text-center">
+          <span class="text-muted">Made with ❤️ by Nilkamal Thakuria</span>
+        </div>
+    </footer>  
     
 </body>
 </html>
